@@ -6,7 +6,6 @@ import { GiFireBomb } from "react-icons/gi";
 
 function App() {
   const [inputs, setInputs] = useState({})
-  let bombSize = 7
   const [renderedList, setRenderedList] = useState([])
   const [score, setScore] = useState(0)
   const [isStarted, setIsStarted] = useState(false)
@@ -35,14 +34,17 @@ function App() {
 
   function fireBomb(){
     alert('OUT')
+    setRenderedList(renderedList.map(elem => {
+      if(elem.p === '.'){
+        return {act: 'B'}
+      } else {
+        return elem
+      }
+    }))
   }
 
   const onClickHandler = ({d, ind}) => {
     if(d.p === 'B'){
-      const newList = [...renderedList]
-      newList[ind] = {...newList[ind], act: 'B'}
-      setRenderedList(newList)      
-      setScore(prev => prev+30)
       return fireBomb()
     } else {
       const newList = [...renderedList]
@@ -51,7 +53,7 @@ function App() {
       setScore(prev => prev+30)
     }
   }
-
+  
   return (
     <div>
       {
@@ -67,9 +69,9 @@ function App() {
         </div> :
         <div className='board'>
           <p className='heading'>
-            <span><FaBomb />{inputs.mines}</span>
-            <span><FaChessBoard />{inputs.width + ' X ' + inputs.height}</span>
-            <span><IoMdStats />{score}</span>
+            <span title='Mines'><FaBomb />{inputs.mines}</span>
+            <span title='Grid Size'><FaChessBoard />{inputs.width + ' X ' + inputs.height}</span>
+            <span title='Score'><IoMdStats />{score}</span>
           </p>
           <div className='grid-container' style={{gridTemplateColumns: `repeat(${inputs.width}, 1fr)`, }}>
             {
@@ -80,6 +82,7 @@ function App() {
           </div>
         </div>
       }
+      <a href="https://www.mohitagarwal.dev" target='_blank'>Gave Design and Developed by Mohit Agarwal</a>
     </div>
   );
 }
