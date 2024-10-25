@@ -2,6 +2,7 @@ import './App.css';
 import { useState } from 'react';
 import { FaBomb, FaChessBoard } from "react-icons/fa";
 import { IoMdStats } from "react-icons/io";
+import { GiFireBomb } from "react-icons/gi";
 
 function App() {
   const [inputs, setInputs] = useState({})
@@ -38,6 +39,10 @@ function App() {
 
   const onClickHandler = ({d, ind}) => {
     if(d.p === 'B'){
+      const newList = [...renderedList]
+      newList[ind] = {...newList[ind], act: 'B'}
+      setRenderedList(newList)      
+      setScore(prev => prev+30)
       return fireBomb()
     } else {
       const newList = [...renderedList]
@@ -68,7 +73,9 @@ function App() {
           </p>
           <div className='grid-container' style={{gridTemplateColumns: `repeat(${inputs.width}, 1fr)`, }}>
             {
-              renderedList?.map((d, ind) => <div className={`grid-item ${d?.act === 'T' ? 'active' : ''}`} key={ind} onClick={() => d?.act === 'T' ? alert('Already Clicked') : onClickHandler({d, ind})}>{d?.p}</div>)
+              renderedList?.map((d, ind) => <div className={`grid-item ${d?.act === 'T' ? 'active' : ''}`} key={ind} onClick={() => d?.act === 'T' ? alert('Already Clicked') : onClickHandler({d, ind})}>
+                {d?.act === 'B' && <GiFireBomb style={{color: 'red', fontSize: '1.2rem'}}/>}
+              </div>)
             }
           </div>
         </div>
